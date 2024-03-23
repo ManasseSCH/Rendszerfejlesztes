@@ -593,23 +593,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\mamoc\\.nuget\\packages\\": {},
+    "C:\\Users\\SneakyShake\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\Rendszerfejlesztés\\Rendszerfejlesztes\\main_core_test\\main_core_test.csproj",
+      "projectUniqueName": "C:\\Users\\SneakyShake\\Documents\\GitHub\\Rendszerfejlesztes\\main_core_test\\main_core_test.csproj",
       "projectName": "main_core_test",
-      "projectPath": "G:\\Rendszerfejlesztés\\Rendszerfejlesztes\\main_core_test\\main_core_test.csproj",
-      "packagesPath": "C:\\Users\\mamoc\\.nuget\\packages\\",
-      "outputPath": "G:\\Rendszerfejlesztés\\Rendszerfejlesztes\\main_core_test\\obj\\",
+      "projectPath": "C:\\Users\\SneakyShake\\Documents\\GitHub\\Rendszerfejlesztes\\main_core_test\\main_core_test.csproj",
+      "packagesPath": "C:\\Users\\SneakyShake\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\SneakyShake\\Documents\\GitHub\\Rendszerfejlesztes\\main_core_test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\mamoc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\SneakyShake\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -618,7 +618,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -631,6 +630,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -661,7 +665,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
