@@ -396,6 +396,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+#else
 main_core_test/.vs/main_core_test/DesignTimeBuild/.dtbcache.v2
 main_core_test/.vs/main_core_test/v17/.suo
 main_core_test/.vs/ProjectEvaluation/main_core_test.metadata.v7.bin
