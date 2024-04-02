@@ -16,7 +16,7 @@ namespace Rendszerfejl.Controllers
             SecurityService securityService = new SecurityService();    
             if (securityService.IsValid(userModel))
             {
-                return View("LoginSuccess",topicsDAO.GetAllTopics());
+                return View("~/Views/Topic/Index.cshtml", topicsDAO.GetAllTopics());
             }
             ModelState.AddModelError("", "Invalid username or password");
             return View("Index", userModel);
