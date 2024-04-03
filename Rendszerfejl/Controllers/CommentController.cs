@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rendszerfejl.Models;
 using Rendszerfejl.Services;
 
 namespace Rendszerfejl.Controllers
@@ -12,10 +13,18 @@ namespace Rendszerfejl.Controllers
             return View("ViewComments", commentsDAO.GetCommentsFromSelected(id));
         }
 
-        IActionResult CreateComment(string name)
+        public IActionResult CreateComment() // Ez csak elvisz arra a cshtml-re, ahol létre lehet hozni
         {
+            return View("CreateComment");
+            
+        }
 
-            return View();
+        public IActionResult CreateNewComment(CommentModel commentModel) // Ez hozza létre
+        {
+            CommentsDAO commentsDAO = new CommentsDAO();
+            commentModel.Timestamp = DateTime.Now;
+            commentsDAO.CreateComment(commentModel);
+            return View("/Home/Index");
         }
 
         

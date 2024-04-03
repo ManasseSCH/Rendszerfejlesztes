@@ -34,5 +34,36 @@ namespace Rendszerfejl.Services
             return foundComments;
 
         }
+
+        public void CreateComment(CommentModel comment)
+        {
+            string sqlStatement = "INSERT INTO comments (user_id, topic_id, body, timestamp) VALUES (@UserId, @TopicId, @Body, @Timestamp)";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, connection);
+                command.Parameters.AddWithValue("@UserId", comment.UserId);
+                command.Parameters.AddWithValue("@TopicId", comment.TopicId);
+                command.Parameters.AddWithValue("@Body", comment.Body);
+                command.Parameters.AddWithValue("@Timestamp", comment.Timestamp);
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected == 1)
+                    {
+                        Console.WriteLine("Comment added successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to add comment.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+            }
+        }
+
     }
 }
