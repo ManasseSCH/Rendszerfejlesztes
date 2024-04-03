@@ -24,7 +24,7 @@ namespace Rendszerfejl.Controllers
             CommentsDAO commentsDAO = new CommentsDAO();
             commentModel.Timestamp = DateTime.Now;
             commentsDAO.CreateComment(commentModel);
-            return View("/Home/Index");
+            return View("CreateComment");
         }
 
         
