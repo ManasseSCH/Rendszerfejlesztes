@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rendszerfejl", "Rendszerfejl.csproj", "{61278ED3-0C0A-49A0-B9D3-630A9D158E7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rendszerfejl", "Rendszerfejl.csproj", "{61278ED3-0C0A-49A0-B9D3-630A9D158E7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "..\Server\Server.csproj", "{DC7A3C27-F430-4591-82B3-8B4CDF33B41F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{61278ED3-0C0A-49A0-B9D3-630A9D158E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61278ED3-0C0A-49A0-B9D3-630A9D158E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61278ED3-0C0A-49A0-B9D3-630A9D158E7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC7A3C27-F430-4591-82B3-8B4CDF33B41F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC7A3C27-F430-4591-82B3-8B4CDF33B41F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC7A3C27-F430-4591-82B3-8B4CDF33B41F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC7A3C27-F430-4591-82B3-8B4CDF33B41F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

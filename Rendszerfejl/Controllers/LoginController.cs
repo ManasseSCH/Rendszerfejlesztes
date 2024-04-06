@@ -12,6 +12,8 @@ namespace Rendszerfejl.Controllers
         }
         public IActionResult ProcessLogin(UserModel userModel)
         {
+            
+            string valt = "Index";
             TopicsDAO topicsDAO = new TopicsDAO();
             SecurityService securityService = new SecurityService();    
             if (securityService.IsValid(userModel))
@@ -19,7 +21,7 @@ namespace Rendszerfejl.Controllers
                 return View("~/Views/Topic/Index.cshtml", topicsDAO.GetAllTopics());
             }
             ModelState.AddModelError("", "Invalid username or password");
-            return View("Index", userModel);
+            return View(valt, userModel);
         }
     }
 }
