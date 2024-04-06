@@ -9,12 +9,12 @@ namespace Rendszerfejl.Controllers
         public string asd { get; set; }
         public IActionResult Index()
         {
-            using (LoginResult()) { return View(); }
+             return View();
             
         }
         public IActionResult ProcessLogin(UserModel userModel)
         {
-            
+            ViewBag.Message = "asd";
             string valt = "Index";
             TopicsDAO topicsDAO = new TopicsDAO();
             SecurityService securityService = new SecurityService();    
@@ -25,16 +25,18 @@ namespace Rendszerfejl.Controllers
             ModelState.AddModelError("", "Invalid username or password");
             return View(valt, userModel);
         }
-        public async Task LoginResult()
+        public async Task<IActionResult> LoginResult()
         {
             using (System.Net.Http.HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync("http://localhost:4244/values");
+                var response = await client.GetAsync("https://localhost:7062/api/values");
                 response .EnsureSuccessStatusCode();
                 if (response.IsSuccessStatusCode)
                 {
                     ViewBag.Message= await response.Content.ReadAsStringAsync();
+                    return View();
                 }
+                return View();
                 
             }
                
