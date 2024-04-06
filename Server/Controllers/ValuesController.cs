@@ -7,5 +7,10 @@ namespace Server.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        [HttpGet]
+        public string[] Get()
+        {
+            return new string[] {"Getmethod","valamik"};
+        }
     }
 }
