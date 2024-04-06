@@ -5,10 +5,12 @@ using Rendszerfejl.Services;
 namespace Rendszerfejl.Controllers
 {
     public class LoginController : Controller
-    { 
+    {
+        public string asd { get; set; }
         public IActionResult Index()
         {
-            return View();
+            using (LoginResult()) { return View(); }
+            
         }
         public IActionResult ProcessLogin(UserModel userModel)
         {
@@ -22,6 +24,20 @@ namespace Rendszerfejl.Controllers
             }
             ModelState.AddModelError("", "Invalid username or password");
             return View(valt, userModel);
+        }
+        public async Task LoginResult()
+        {
+            using (System.Net.Http.HttpClient client = new HttpClient())
+            {
+                var response = await client.GetAsync("http://localhost:4244/values");
+                response .EnsureSuccessStatusCode();
+                if (response.IsSuccessStatusCode)
+                {
+                    ViewBag.Message= await response.Content.ReadAsStringAsync();
+                }
+                
+            }
+               
         }
     }
 }
