@@ -10,7 +10,7 @@ namespace Rendszerfejl.Controllers
     public class TopicControllerAPI : ControllerBase
     {
         [HttpGet]
-        public ActionResult <IEnumerable<TopicModel>> Index()
+        public IEnumerable<TopicModel> Index()
         {
             TopicsDAO topicsDAO = new TopicsDAO();
             return topicsDAO.GetAllTopics();

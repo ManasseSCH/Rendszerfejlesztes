@@ -6,7 +6,10 @@ namespace Rendszerfejl.Services
 {
     public class TopicsDAO
 
+
     {
+        
+
         string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Rendszerfejl;
                                     Integrated Security=True;Connect Timeout=;
                                     Encrypt=False;Trust Server Certificate=False;

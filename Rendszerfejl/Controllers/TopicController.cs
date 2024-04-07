@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Rendszerfejl.Models;
 using Rendszerfejl.Services;
 using System.Net.Http.Headers;
@@ -7,10 +8,28 @@ namespace Rendszerfejl.Controllers
 {
     public class TopicController : Controller
     {
-        public IActionResult Index()
+        public static async Task<string> getString(string url)
         {
-            TopicsDAO topicsDAO = new TopicsDAO();
-            return View( topicsDAO.GetAllTopics());
+            string message = "";
+            using (System.Net.Http.HttpClient client = new HttpClient())
+            {
+                var response = await client.GetAsync("https://localhost:7062/api/"+url);
+                response.EnsureSuccessStatusCode();
+                if (response.IsSuccessStatusCode)
+                {
+                    message = await response.Content.ReadAsStringAsync();
+                    
+                }
+                return message;
+
+            }
+        }
+        public async Task<IActionResult> index()
+        {
+            string str = await getString("values/test");
+
+            List<TopicModel> myList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
+            return View(myList);
         }
         public IActionResult SearchResults(string searchTerm) 
         {
