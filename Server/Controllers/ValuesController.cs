@@ -7,6 +7,7 @@ using Rendszerfejl.Services;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System;
+using Server.Server_Services;
 
 namespace Server.Controllers
 {
@@ -17,16 +18,32 @@ namespace Server.Controllers
         [HttpGet("test")]
         public IEnumerable<TopicModel> test()
         {
-            TopicsDAO topicsDAO = new TopicsDAO();
+			TopicsDAO_Server topicsDAO = new TopicsDAO_Server();
             return topicsDAO.GetAllTopics();
         }
+
         [HttpGet("searchfor/{searchTerm}")]
         public ActionResult<IEnumerable<TopicModel>> SearchResults(string searchTerm)
         {
-            TopicsDAO topics = new TopicsDAO();
+            TopicsDAO_Server topics = new TopicsDAO_Server();
             List<TopicModel> topicList = topics.SearchTopics(searchTerm);
 
             return topicList;
         }
-    }
+
+		[HttpGet("login/{username},{password}")]
+		public IEnumerable<TopicModel> login([FromRoute(Name ="username")] string username,[FromRoute (Name ="password")]string password)
+		{
+            SecurityService_Server securityService = new SecurityService_Server();  
+            UserModel user = new UserModel();
+            user.password = password;
+            user.userName = username;
+            if (securityService.IsValid(user))
+            {
+				TopicsDAO_Server topicsDAO = new TopicsDAO_Server();
+				return topicsDAO.GetAllTopics();
+			}
+            return new List<TopicModel>();
+		}
+	}
 }

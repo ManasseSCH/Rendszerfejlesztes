@@ -10,7 +10,7 @@ namespace Rendszerfejl.Controllers
         {
             CommentsDAO commentsDAO = new CommentsDAO();
 
-            return View("ViewComments", commentsDAO.GetCommentsFromSelected(id));
+            return View("ViewComments"/*, commentsDAO.GetCommentsFromSelected(id)*/); // under migration to server
         }
 
         public IActionResult CreateComment() // Ez csak elvisz arra a cshtml-re, ahol létre lehet hozni
@@ -23,7 +23,7 @@ namespace Rendszerfejl.Controllers
         {
             CommentsDAO commentsDAO = new CommentsDAO();
             commentModel.Timestamp = DateTime.Now;
-            commentsDAO.CreateComment(commentModel);
+            //commentsDAO.CreateComment(commentModel); under migration to server
             return View("CreateComment");
         }
 

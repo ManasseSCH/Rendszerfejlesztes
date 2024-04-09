@@ -5,7 +5,7 @@ using Rendszerfejl.Services;
 
 namespace Rendszerfejl.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : ParentController //(Controller->ParentController) ösosztályból származik
     {
 
         public async Task <IActionResult> Index()
@@ -24,23 +24,21 @@ namespace Rendszerfejl.Controllers
             }
 
         }
-        public async Task<IActionResult> ProcessLogin(UserModel userModel)
+        public async Task<IActionResult> ProcessLogin(UserModel userModel) //done migrating to server
         {
-             
 
-            string str = await TopicController.getString("values/test");
+            string url = ("values/login/"+userModel.userName+"," + userModel.password);
 
-            List<TopicModel> myList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
-            
-            string valt = "Index";
-            TopicsDAO topicsDAO = new TopicsDAO();
-            SecurityService securityService = new SecurityService();    
-            if (securityService.IsValid(userModel))
+			string str = await getString(url);
+
+            if (str!=null)
             {
-                return View("~/Views/Topic/Index.cshtml", myList);
-            }
+                List<TopicModel> myList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
+				return View("~/Views/Topic/Index.cshtml", myList);
+			}
+            
             ModelState.AddModelError("", "Invalid username or password");
-            return View(valt, userModel);
+            return View("Index", userModel);
         }
         public async Task<IActionResult> LoginResult()
         {
