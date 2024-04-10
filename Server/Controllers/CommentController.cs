@@ -21,18 +21,13 @@ namespace Rendszerfejl.Controllers
 
         }
 
-        //public IActionResult CreateComment() // Ez csak elvisz arra a cshtml-re, ahol létre lehet hozni
-        //{
-        //    return View("CreateComment");
-
-        //}
-
+        //[HttpPost]
         //public IActionResult CreateNewComment(CommentModel commentModel) // Ez hozza létre
         //{
-        //    CommentsDAO commentsDAO = new CommentsDAO();
+        //    CommentsDAO_Server commentsDAO = new CommentsDAO_Server();
         //    commentModel.Timestamp = DateTime.Now;
-        //    //commentsDAO.CreateComment(commentModel); under migration to server
-        //    return View("CreateComment");
+        //    commentsDAO.CreateComment(commentModel);
+        //    return View("CreateComment"); // return
         //}
 
 

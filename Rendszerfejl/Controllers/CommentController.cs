@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Newtonsoft.Json;
 using Rendszerfejl.Models;
 using Rendszerfejl.Services;
@@ -9,7 +10,7 @@ namespace Rendszerfejl.Controllers
     {
         public async Task<IActionResult> ViewComments(int id)
         {
-            string str = await getString("viewcomments/" + id);
+            string str = await getString("comment/viewcomments/" + id);
 
             List<CommentModel> myList = JsonConvert.DeserializeObject<List<CommentModel>>(str);
             
@@ -22,13 +23,13 @@ namespace Rendszerfejl.Controllers
             
         }
 
-        public IActionResult CreateNewComment(CommentModel commentModel) // Ez hozza létre
-        {
-            CommentsDAO commentsDAO = new CommentsDAO();
-            commentModel.Timestamp = DateTime.Now;
-            //commentsDAO.CreateComment(commentModel); under migration to server
-            return View("CreateComment");
-        }
+        //public async Task<IActionResult> CreateNewComment(CommentModel commentModel) // Ez hozza létre
+        //{
+        //    string str = await getString("comment/createcomment/"+commentModel);
+
+        //    return View();
+
+        //}
 
         
     }
