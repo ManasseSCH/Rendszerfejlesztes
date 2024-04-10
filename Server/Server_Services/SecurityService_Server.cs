@@ -11,7 +11,7 @@ namespace Server.Server_Services
         {
 
         }
-        public bool IsValid(UserModel user)
+        public bool IsValid(UserDTO user)
         {
             UsersDAO_Server usersDAO = new UsersDAO_Server();
 			return usersDAO.FindUserByNameAndPassword(user);

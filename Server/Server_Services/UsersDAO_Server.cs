@@ -7,7 +7,7 @@ namespace Server.Server_Services
     {
         //string connectionString2 =  @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog = rendszerfejl; Integrated Security = True; Connect Timeout = 30; Encrypt=False;Trust Server Certificate=False;Application Intent = ReadWrite; Multi Subnet Failover=False";
         string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Rendszerfejl;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
-        public bool FindUserByNameAndPassword(UserModel user)
+        public bool FindUserByNameAndPassword(UserDTO user)
         {
             bool success = false;
             string sqlStatement = "SELECT * FROM dbo.Users WHERE username = @username AND password = @password";

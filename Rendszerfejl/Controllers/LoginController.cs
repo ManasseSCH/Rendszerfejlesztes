@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Rendszerfejl.Models;
 using Rendszerfejl.Services;
+using System.Text;
 
 namespace Rendszerfejl.Controllers
 {
@@ -10,42 +11,63 @@ namespace Rendszerfejl.Controllers
 
         public async Task <IActionResult> Index()
         {
-            using (System.Net.Http.HttpClient client = new HttpClient())
-            {
-                var response = await client.GetAsync("https://localhost:7062/api/topic/allTopics");
-                response.EnsureSuccessStatusCode();
-                if (response.IsSuccessStatusCode)
-                {
-
-                    return View();
-                }
             return View();
-
-            }
 
         }
         public async Task<IActionResult> ProcessLogin(UserModel userModel) //done migrating to server
         {
 
-            string url = ("login/" + userModel.userName + "," + userModel.password);
 
-			string str = await getString(url);
+            string url = "https://localhost:7062/api/Login/login";
+            UserDTO userDTO = new UserDTO();
+            userDTO.password = userModel.password;
+            userDTO.userName = userModel.userName;
 
-            if (str!=null)
+            // JSON data to send in the request body
+            string json = System.Text.Json.JsonSerializer.Serialize(userDTO);
+
+
+            // Create an instance of HttpClient
+            using (HttpClient client = new HttpClient())
             {
-                List<TopicModel> myList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
-				return View("~/Views/Topic/Index.cshtml", myList);
-			}
-            
-            ModelState.AddModelError("", "Invalid username or password");
-            return View("Index", userModel);
-            
-            
+                // Set the Content-Type header to indicate JSON data
+
+
+                try
+                {
+                    // Send a POST request with the JSON data
+                    HttpResponseMessage response = await client.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
+
+                    // Check if the response is successful (status code in the range 200-299)
+                    if (response.IsSuccessStatusCode)
+                    {
+                        
+                        string str = await getString("topic/allTopics");
+
+                        List<TopicModel> myList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
+                        return View("~/Views/topic/index.cshtml",myList);
+                        
+                    }
+                    else
+                    {
+
+                        ModelState.AddModelError("", "Invalid username or password");
+                        return View("Index");
+                    }
+                }
+                catch (HttpRequestException e)
+                {
+                    // Handle exception if request fails
+                    Console.WriteLine("Error: " + e.Message);
+                }
+                ModelState.AddModelError("", "Invalid username or password");
+                return View("Index");
+            }
         }
-        public async Task<IActionResult> LoginResult()
-        {
-            return View();
+            public async Task<IActionResult> LoginResult()
+            {
+                return View();
                
-        }
+            }
     }
 }

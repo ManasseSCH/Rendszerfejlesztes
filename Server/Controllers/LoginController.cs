@@ -17,28 +17,25 @@ namespace Server.Controllers
     {
 
 
-		[HttpGet("{username},{password}")]
-		public IEnumerable<TopicModel> login([FromRoute(Name ="username")] string username,[FromRoute (Name ="password")]string password)
-		{
-
-            SecurityService_Server securityService = new SecurityService_Server();  
-            UserModel user = new UserModel();
-            user.password = "password1";
-            user.userName = "username1";
-            user.id = 1;
-            user.name = "User One";
+		[HttpPost("login")]
+        public IActionResult Login([FromBody] UserDTO user)
+        {
 
 
-           
+            // Validate credentials and perform login logic here
+            SecurityService_Server securityService = new SecurityService_Server();
 
-            if (securityService.IsValid(user))  //TO DO: Valamiert mindig false a fuggveny eredmenye
+            if (securityService.IsValid(user))
             {
-				TopicsDAO_Server topicsDAO = new TopicsDAO_Server();
-                return topicsDAO.GetAllTopics();
-			}
-            
-            return new List<TopicModel>();
 
+                return Ok();
+            }
+            else
+            {
+                // Return error response
+                return BadRequest("Invalid credentials");
+            }
         }
-	}
+
+    }
 }
