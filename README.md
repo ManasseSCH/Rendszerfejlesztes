@@ -12,8 +12,8 @@ Ez a projekt a Rendszerfejlesztés óra beadandója
 
 1. **Szükséges programok**: Visual studio, .net framework, adatbázis kezelő szoftver
 
-2. **Az adatbázis üzembehelyezése:** : TODO 
+2. **Az adatbázis üzembehelyezése:** : Lokális adatbázisra egy "Rendszerfejl" nevű adatbázis létrehozása. Az "sqlcode.txt" fájl futtatása.
    
-3. **Indítás**: IIS Express mode-ban
+3. **Indítás**: multiple projects
    
 ---
