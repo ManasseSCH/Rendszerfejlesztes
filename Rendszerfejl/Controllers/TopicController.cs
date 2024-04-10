@@ -32,18 +32,18 @@ namespace Rendszerfejl.Controllers
 
         public async Task<IActionResult> index()
         {
-            string str = await getString("values/test");
+            string str = await getString("topic/allTopics");
 
             List<TopicModel> myList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
             return View(myList);
         }
-        //public IActionResult SearchResults(string searchTerm) //Srevices migrated to server side TO DO: migration to server side and access it from there
-        //{
-        //    TopicsDAO topics = new TopicsDAO();
-        //    List<TopicModel> topicList = topics.SearchTopics(searchTerm);  
-            
-        //    return View("index",topicList);
-        //}
+        public async Task<IActionResult> SearchResults(string searchTerm)
+        {
+           
+            string str = await getString("topic/searchfor/"+searchTerm);
+            List<TopicModel> topicList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
+            return View("index", topicList);
+        }
         public IActionResult SearchForm(int id)
         {
             return View();

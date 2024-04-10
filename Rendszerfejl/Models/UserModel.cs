@@ -7,8 +7,8 @@ namespace Rendszerfejl.Models
         public int id { get; set; }
         public string userName { get; set; }
         public string name { get; set; }
-        [PasswordPropertyText]    
-        
+        [PasswordPropertyText]
+
         public string password { get; set; }        
     }
 }

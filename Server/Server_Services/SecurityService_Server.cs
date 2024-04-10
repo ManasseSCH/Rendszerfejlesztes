@@ -5,7 +5,7 @@ namespace Server.Server_Services
 {
     public class SecurityService_Server
     {
-        UsersDAO usersDAO = new UsersDAO();
+        UsersDAO_Server usersDAO = new UsersDAO_Server();
         List<UserModel> knownUsers = new List<UserModel>();
         public SecurityService_Server()
         {

@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Rendszerfejl.Models;
 using Rendszerfejl.Services;
 
 namespace Rendszerfejl.Controllers
 {
-    public class CommentController : Controller
+    public class CommentController : ParentController
     {
-        public IActionResult ViewComments(int id)
+        public async Task<IActionResult> ViewComments(int id)
         {
-            CommentsDAO commentsDAO = new CommentsDAO();
+            string str = await getString("viewcomments/" + id);
 
-            return View("ViewComments"/*, commentsDAO.GetCommentsFromSelected(id)*/); // under migration to server
+            List<CommentModel> myList = JsonConvert.DeserializeObject<List<CommentModel>>(str);
+            
+            return View("ViewComments",myList); 
         }
 
         public IActionResult CreateComment() // Ez csak elvisz arra a cshtml-re, ahol létre lehet hozni

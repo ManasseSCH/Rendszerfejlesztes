@@ -13,37 +13,32 @@ namespace Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class LoginController : ControllerBase
     {
-        [HttpGet("test")]
-        public IEnumerable<TopicModel> test()
-        {
-			TopicsDAO_Server topicsDAO = new TopicsDAO_Server();
-            return topicsDAO.GetAllTopics();
-        }
 
-        [HttpGet("searchfor/{searchTerm}")]
-        public ActionResult<IEnumerable<TopicModel>> SearchResults(string searchTerm)
-        {
-            TopicsDAO_Server topics = new TopicsDAO_Server();
-            List<TopicModel> topicList = topics.SearchTopics(searchTerm);
 
-            return topicList;
-        }
-
-		[HttpGet("login/{username},{password}")]
+		[HttpGet("{username},{password}")]
 		public IEnumerable<TopicModel> login([FromRoute(Name ="username")] string username,[FromRoute (Name ="password")]string password)
 		{
+
             SecurityService_Server securityService = new SecurityService_Server();  
             UserModel user = new UserModel();
-            user.password = password;
-            user.userName = username;
-            if (securityService.IsValid(user))
+            user.password = "password1";
+            user.userName = "username1";
+            user.id = 1;
+            user.name = "User One";
+
+
+           
+
+            if (securityService.IsValid(user))  //TO DO: Valamiert mindig false a fuggveny eredmenye
             {
 				TopicsDAO_Server topicsDAO = new TopicsDAO_Server();
-				return topicsDAO.GetAllTopics();
+                return topicsDAO.GetAllTopics();
 			}
+            
             return new List<TopicModel>();
-		}
+
+        }
 	}
 }

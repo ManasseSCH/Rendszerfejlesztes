@@ -12,14 +12,14 @@ namespace Rendszerfejl.Controllers
         {
             using (System.Net.Http.HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync("https://localhost:7062/api/values/test");
+                var response = await client.GetAsync("https://localhost:7062/api/topic/allTopics");
                 response.EnsureSuccessStatusCode();
                 if (response.IsSuccessStatusCode)
                 {
-                    ViewBag.Message = await response.Content.ReadAsStringAsync();
+
                     return View();
                 }
-                return View();
+            return View();
 
             }
 
@@ -27,7 +27,7 @@ namespace Rendszerfejl.Controllers
         public async Task<IActionResult> ProcessLogin(UserModel userModel) //done migrating to server
         {
 
-            string url = ("values/login/"+userModel.userName+"," + userModel.password);
+            string url = ("login/" + userModel.userName + "," + userModel.password);
 
 			string str = await getString(url);
 
@@ -39,6 +39,8 @@ namespace Rendszerfejl.Controllers
             
             ModelState.AddModelError("", "Invalid username or password");
             return View("Index", userModel);
+            
+            
         }
         public async Task<IActionResult> LoginResult()
         {
