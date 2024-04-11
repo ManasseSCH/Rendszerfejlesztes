@@ -15,5 +15,6 @@ Ez a projekt a Rendszerfejlesztés óra beadandója
 2. **Az adatbázis üzembehelyezése:** : Lokális adatbázisra egy "Rendszerfejl" nevű adatbázis létrehozása. Az "sqlcode.txt" fájl futtatása.
    
 3. **Indítás**: multiple projects
-   
+
+4. Bejelentkezés példa: user1 / password1 
 ---
