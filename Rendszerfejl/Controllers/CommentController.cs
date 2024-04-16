@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Newtonsoft.Json;
 using Rendszerfejl.Models;
 using Rendszerfejl.Services;
+using System.Text;
+using System;
 
 namespace Rendszerfejl.Controllers
 {
@@ -17,20 +19,45 @@ namespace Rendszerfejl.Controllers
             return View("ViewComments",myList); 
         }
 
-        public IActionResult CreateComment() // Ez csak elvisz arra a cshtml-re, ahol létre lehet hozni
+        public IActionResult CreateComment(int id) // Ez csak elvisz arra a cshtml-re, ahol létre lehet hozni
         {
+            @ViewBag.Message = id;
             return View("CreateComment");
             
         }
 
-        //public async Task<IActionResult> CreateNewComment(CommentModel commentModel) // Ez hozza létre
-        //{
-        //    string str = await getString("comment/createcomment/"+commentModel);
+        public async void CreateNewComment(string id, CommentModel commentModel) // Ez hozza létre
+        {
 
-        //    return View();
+            string url = "https://localhost:7062/api/comment/viewcomments/create";
+            // JSON data to send in the request body
+            string json = System.Text.Json.JsonSerializer.Serialize(commentModel);
+            commentModel.TopicId = Convert.ToInt32(id);
+            commentModel.UserId = 13;
+            commentModel.Timestamp= DateTime.Now; 
 
-        //}
 
-        
+
+            // Create an instance of HttpClient
+            using (HttpClient client = new HttpClient())
+            {
+                // Set the Content-Type header to indicate JSON data
+                List<CommentModel> myList = new List<CommentModel>();
+
+                try
+                {
+                    JsonContent content = JsonContent.Create(commentModel);
+                    await client.PostAsync(url,content);
+                    //await ViewComments(Convert.ToInt32(id));
+                }
+                catch 
+                {
+                    
+                }
+
+            }
+        }
+
+
     }
 }

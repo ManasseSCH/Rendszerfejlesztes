@@ -59,9 +59,11 @@ namespace Rendszerfejl.Controllers
                 {
                     // Handle exception if request fails
                     Console.WriteLine("Error: " + e.Message);
+
+                    ModelState.AddModelError("", "Invalid username or password");
+                    return View("Index");
                 }
-                ModelState.AddModelError("", "Invalid username or password");
-                return View("Index");
+
             }
         }
             public async Task<IActionResult> LoginResult()

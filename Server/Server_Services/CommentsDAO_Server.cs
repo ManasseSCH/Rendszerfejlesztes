@@ -10,58 +10,85 @@ namespace Server.Server_Services
 		public List<CommentModel> GetCommentsFromSelected(int id)
 		{
 			List<CommentModel> foundComments = new List<CommentModel>();
-			string sqlStatement = "SELECT c.* from comments as c join topics as t on t.id = c.topic_id where t.id = @Id"; // TODO
-			using (SqlConnection connection = new SqlConnection(connectionString))
-			{
-				SqlCommand commmand = new SqlCommand(sqlStatement, connection);
-				commmand.Parameters.AddWithValue("@Id", id);
-				try
-				{
-					connection.Open();
-					SqlDataReader reader = commmand.ExecuteReader();
-					while (reader.Read())
-					{
-						foundComments.Add(new CommentModel { Id = (int)reader[0], UserId = (int)reader[1], TopicId = (int)reader[2], Body = (string)reader[3], Timestamp = (DateTime)reader[4] });
-					}
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine(ex.Message);
-				}
+			//string sqlStatement = "SELECT c.* from comments as c join topics as t on t.id = c.topic_id where t.id = @Id"; // TODO
+			//using (SqlConnection connection = new SqlConnection(connectionString))
+			//{
+			//	SqlCommand commmand = new SqlCommand(sqlStatement, connection);
+			//	commmand.Parameters.AddWithValue("@Id", id);
+			//	try
+			//	{
+			//		connection.Open();
+			//		SqlDataReader reader = commmand.ExecuteReader();
+			//		while (reader.Read())
+			//		{
+			//			foundComments.Add(new CommentModel { Id = (int)reader[0], UserId = (int)reader[1], TopicId = (int)reader[2], Body = (string)reader[3], Timestamp = (DateTime)reader[4] });
+			//		}
+			//	}
+			//	catch (Exception ex)
+			//	{
+			//		Console.WriteLine(ex.Message);
+			//	}
 
+			//}
+
+
+			using(BloggingContext bloggingContext = new BloggingContext()) 
+			{
+			foundComments=bloggingContext.Comments.Where(c=>c.TopicId==id).ToList();
+				
 			}
+
+
+
 			return foundComments;
 
 		}
 
 		public void CreateComment(CommentModel comment)
 		{
-			string sqlStatement = "INSERT INTO comments (user_id, topic_id, body, timestamp) VALUES (@UserId, @TopicId, @Body, @Timestamp)";
-			using (SqlConnection connection = new SqlConnection(connectionString))
-			{
-				SqlCommand command = new SqlCommand(sqlStatement, connection);
-				command.Parameters.AddWithValue("@UserId", comment.UserId);
-				command.Parameters.AddWithValue("@TopicId", comment.TopicId);
-				command.Parameters.AddWithValue("@Body", comment.Body);
-				command.Parameters.AddWithValue("@Timestamp", comment.Timestamp);
-				try
-				{
-					connection.Open();
-					int rowsAffected = command.ExecuteNonQuery();
-					if (rowsAffected == 1)
-					{
-						Console.WriteLine("Comment added successfully.");
-					}
-					else
-					{
-						Console.WriteLine("Failed to add comment.");
-					}
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine("Error: " + ex.Message);
-				}
-			}
-		}
+            //string sqlStatement = "INSERT INTO comments (user_id, topic_id, body, timestamp) VALUES (@UserId, @TopicId, @Body, @Timestamp)";
+            //using (SqlConnection connection = new SqlConnection(connectionString))
+            //{
+            //	SqlCommand command = new SqlCommand(sqlStatement, connection);
+            //	command.Parameters.AddWithValue("@UserId", comment.UserId);
+            //	command.Parameters.AddWithValue("@TopicId", comment.TopicId);
+            //	command.Parameters.AddWithValue("@Body", comment.Body);
+            //	command.Parameters.AddWithValue("@Timestamp", comment.Timestamp);
+            //	try
+            //	{
+            //		connection.Open();
+            //		int rowsAffected = command.ExecuteNonQuery();
+            //		if (rowsAffected == 1)
+            //		{
+            //			Console.WriteLine("Comment added successfully.");
+            //		}
+            //		else
+            //		{
+            //			Console.WriteLine("Failed to add comment.");
+            //		}
+            //	}
+            //	catch (Exception ex)
+            //	{
+            //		Console.WriteLine("Error: " + ex.Message);
+            //	}
+            //}
+
+            using (BloggingContext bg = new BloggingContext())
+            {
+                CommentModel newcomment = new CommentModel();
+
+                newcomment.UserId = comment.UserId;
+                newcomment.TopicId = comment.TopicId;
+                newcomment.Body = comment.Body;
+                newcomment.Timestamp = comment.Timestamp;
+                //Console.WriteLine(comment.Id + "\t" + comment.UserId + "\t" + comment.TopicId + "\t" + comment.Body + "\t" + comment.Timestamp);
+                bg.Add<CommentModel>(newcomment);
+
+                bg.SaveChanges();
+
+            }
+
+
+        }
 	}
 }

@@ -1,7 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using Server;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+    // Your database operations here
 
+// Add services to the container.
+//BloggingContext bloggingContext = new BloggingContext();
+//Microsoft.EntityFrameworkCore.DbContextOptionsBuilder DbCOB= new Microsoft.EntityFrameworkCore.DbContextOptionsBuilder();
+//bloggingContext.configure_db_manually(DbCOB);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

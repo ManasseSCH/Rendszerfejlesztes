@@ -2,6 +2,10 @@
 using Rendszerfejl.Models;
 using Rendszerfejl.Services;
 using Server.Server_Services;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using Server;
 
 namespace Rendszerfejl.Controllers
 {
@@ -9,6 +13,7 @@ namespace Rendszerfejl.Controllers
     [ApiController]
     public class CommentController : Controller
     {
+        
         [HttpGet("viewcomments/{topicId}")]
         public ActionResult<IEnumerable<CommentModel>> ViewComments(int topicId)
         {
@@ -21,14 +26,22 @@ namespace Rendszerfejl.Controllers
 
         }
 
-        //[HttpPost]
-        //public IActionResult CreateNewComment(CommentModel commentModel) // Ez hozza létre
-        //{
-        //    CommentsDAO_Server commentsDAO = new CommentsDAO_Server();
-        //    commentModel.Timestamp = DateTime.Now;
-        //    commentsDAO.CreateComment(commentModel);
-        //    return View("CreateComment"); // return
-        //}
+        [HttpPost("viewcomments/create")]
+        public async Task<IActionResult> CreateNewComment([FromBody] CommentModel comment) // Ez hozza létre
+        {
+            try 
+            { 
+                CommentsDAO_Server commentsDAO = new CommentsDAO_Server();
+                
+                commentsDAO.CreateComment(comment);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
 
 
     }
