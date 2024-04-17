@@ -10,27 +10,7 @@ namespace Server.Server_Services
 		public List<CommentModel> GetCommentsFromSelected(int id)
 		{
 			List<CommentModel> foundComments = new List<CommentModel>();
-			//string sqlStatement = "SELECT c.* from comments as c join topics as t on t.id = c.topic_id where t.id = @Id"; // TODO
-			//using (SqlConnection connection = new SqlConnection(connectionString))
-			//{
-			//	SqlCommand commmand = new SqlCommand(sqlStatement, connection);
-			//	commmand.Parameters.AddWithValue("@Id", id);
-			//	try
-			//	{
-			//		connection.Open();
-			//		SqlDataReader reader = commmand.ExecuteReader();
-			//		while (reader.Read())
-			//		{
-			//			foundComments.Add(new CommentModel { Id = (int)reader[0], UserId = (int)reader[1], TopicId = (int)reader[2], Body = (string)reader[3], Timestamp = (DateTime)reader[4] });
-			//		}
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine(ex.Message);
-			//	}
-
-			//}
-
+			
 
 			using(BloggingContext bloggingContext = new BloggingContext()) 
 			{

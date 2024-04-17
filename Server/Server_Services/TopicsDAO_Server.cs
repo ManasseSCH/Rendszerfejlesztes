@@ -14,55 +14,56 @@ namespace Server.Server_Services
 
         public List<TopicModel> GetAllTopics()
         {
-            List<TopicModel> foundTopics = new List<TopicModel>();
-            string sqlStatement = "SELECT * FROM dbo.Topics";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+
+            
+            using (BloggingContext context = new BloggingContext())
             {
-                SqlCommand commmand = new SqlCommand(sqlStatement, connection);
-                try
+                var topics = new List<TopicModel>();
+                foreach (var item in context.Topics) //Végigjárjuk a Topics táblát, hozzáadjuk elemenként a topics listához
                 {
-                    connection.Open();
-                    SqlDataReader reader = commmand.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        foundTopics.Add(new TopicModel { Id = (int)reader[0], Name = (string)reader[1], TypeId = (int)reader[2], Description = (string)reader[3] });
-                    }
+                    topics.Add(item);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-
+                return topics;
             }
-            return foundTopics;
-
         }
         public List<TopicModel> SearchTopics(string searchTerm)
         {
-            List<TopicModel> foundTopics = new List<TopicModel>();
-            string sqlStatement = "select t.* from topics as t join topic_types as tt on t.type_id = tt.id WHERE tt.name like @Name";
+            //List<TopicModel> foundTopics = new List<TopicModel>();
+            //string sqlStatement = "select t.* from topics as t join topic_types as tt on t.type_id = tt.id WHERE tt.name like @Name";
 
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand command = new SqlCommand(sqlStatement, connection);
-                command.Parameters.AddWithValue("@Name", '%' + searchTerm + '%');
-                try
+            //using (SqlConnection connection = new SqlConnection(connectionString))
+            //{
+            //    SqlCommand command = new SqlCommand(sqlStatement, connection);
+            //    command.Parameters.AddWithValue("@Name", '%' + searchTerm + '%');
+            //    try
+            //    {
+            //        connection.Open();
+            //        SqlDataReader reader = command.ExecuteReader();
+            //        while (reader.Read())
+            //        {
+            //            foundTopics.Add(new TopicModel { Id = (int)reader[0], Name = (string)reader[1], TypeId = (int)reader[2], Description = (string)reader[3] });
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.Message);
+            //    }
+
+            //}
+            //return foundTopics;
+
+           
+
+            
+                using (BloggingContext context = new BloggingContext())
                 {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        foundTopics.Add(new TopicModel { Id = (int)reader[0], Name = (string)reader[1], TypeId = (int)reader[2], Description = (string)reader[3] });
-                    }
+                    return context.Topics
+                        .Where(t => t.Name.Contains(searchTerm)) // TO DO: rossz lekérdezés -> join megvalósítása
+                        .ToList();
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+            
 
-            }
-            return foundTopics;
 
         }
     }
