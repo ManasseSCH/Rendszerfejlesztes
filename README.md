@@ -10,7 +10,7 @@ Ez a projekt a Rendszerfejlesztés óra beadandója
 
 ### Futtatás szűz Windows felületen
 
-1. **Szükséges programok**: Visual Studio, .NET, Entity Framework, adatbázis-kezelő szoftver
+1. **Szükséges programok**: Visual Studio, .NET, ASP.net, Entity Framework, adatbázis-kezelő szoftver 
 
 2. **Az adatbázis üzembehelyezése**:
     - Nyisd meg a NuGet Package Manager-t.
