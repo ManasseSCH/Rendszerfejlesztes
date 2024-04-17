@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Data.SqlClient;
 using Rendszerfejl.Models;
 
 namespace Server.Server_Services
@@ -28,41 +29,23 @@ namespace Server.Server_Services
         }
         public List<TopicModel> SearchTopics(string searchTerm)
         {
-            //List<TopicModel> foundTopics = new List<TopicModel>();
-            //string sqlStatement = "select t.* from topics as t join topic_types as tt on t.type_id = tt.id WHERE tt.name like @Name";
 
-
-            //using (SqlConnection connection = new SqlConnection(connectionString))
-            //{
-            //    SqlCommand command = new SqlCommand(sqlStatement, connection);
-            //    command.Parameters.AddWithValue("@Name", '%' + searchTerm + '%');
-            //    try
-            //    {
-            //        connection.Open();
-            //        SqlDataReader reader = command.ExecuteReader();
-            //        while (reader.Read())
-            //        {
-            //            foundTopics.Add(new TopicModel { Id = (int)reader[0], Name = (string)reader[1], TypeId = (int)reader[2], Description = (string)reader[3] });
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine(ex.Message);
-            //    }
 
             //}
             //return foundTopics;
 
-           
 
-            
-                using (BloggingContext context = new BloggingContext())
-                {
-                    return context.Topics
-                        .Where(t => t.Name.Contains(searchTerm)) // TO DO: rossz lekérdezés -> join megvalósítása
-                        .ToList();
-                }
-            
+            using BloggingContext context = new BloggingContext();
+
+                var topics = (from topic in context.Topics
+                          join ttype in context.Ttypes on topic.TypeId equals ttype.Id
+                          where ttype.Name.Contains(searchTerm)
+                          select topic).ToList();
+
+            return topics;
+
+
+
 
 
         }

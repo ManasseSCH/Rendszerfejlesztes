@@ -26,7 +26,7 @@ namespace Rendszerfejl.Controllers
             
         }
 
-        public async void CreateNewComment(string id, CommentModel commentModel) // Ez hozza létre
+        public async Task<IActionResult> CreateNewComment(string id, CommentModel commentModel) // Ez hozza létre
         {
 
             string url = "https://localhost:7062/api/comment/viewcomments/create";
@@ -50,11 +50,11 @@ namespace Rendszerfejl.Controllers
                     await client.PostAsync(url,content);
                     //await ViewComments(Convert.ToInt32(id));
                 }
-                catch 
+                catch (Exception e)
                 {
-                    
+                    Console.Write(e.Message);    
                 }
-
+                return View("CreateComment");
             }
         }
 

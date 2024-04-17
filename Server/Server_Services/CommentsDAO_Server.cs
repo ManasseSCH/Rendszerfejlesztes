@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
+using Microsoft.Data.SqlClient;
 using Rendszerfejl.Models;
 
 namespace Server.Server_Services

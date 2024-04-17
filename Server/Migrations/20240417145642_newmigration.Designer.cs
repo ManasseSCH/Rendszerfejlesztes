@@ -12,8 +12,8 @@ using Server;
 namespace Server.Migrations
 {
     [DbContext(typeof(BloggingContext))]
-    [Migration("20240417095222_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240417145642_newmigration")]
+    partial class newmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
