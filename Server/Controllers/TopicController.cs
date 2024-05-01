@@ -8,6 +8,7 @@ using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System;
 using Server.Server_Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers
 {
@@ -16,6 +17,7 @@ namespace Server.Controllers
     public class TopicController : ControllerBase
     {
         [HttpGet("allTopics")]
+        [Authorize]
         public IEnumerable<TopicModel> allTopics()
         {
             TopicsDAO_Server topicsDAO = new TopicsDAO_Server();

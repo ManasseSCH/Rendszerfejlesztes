@@ -41,7 +41,12 @@ namespace Rendszerfejl.Controllers
                     // Check if the response is successful (status code in the range 200-299)
                     if (response.IsSuccessStatusCode)
                     {
-                        
+                        string responseContent = await response.Content.ReadAsStringAsync();
+
+                        // Parse the response content as an integer
+                       
+                        HttpContext.Session.SetString("Id", responseContent);
+
                         string str = await getString("topic/allTopics");
 
                         List<TopicModel> myList = JsonConvert.DeserializeObject<List<TopicModel>>(str);

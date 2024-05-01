@@ -31,9 +31,11 @@ namespace Rendszerfejl.Controllers
 
             string url = "https://localhost:7062/api/comment/viewcomments/create";
             // JSON data to send in the request body
+            string tempId = HttpContext.Session.GetString("Id");
+            int intTempId = int.Parse(tempId);
             string json = System.Text.Json.JsonSerializer.Serialize(commentModel);
             commentModel.TopicId = Convert.ToInt32(id);
-            commentModel.UserId = 13;
+            commentModel.UserId = intTempId;
             commentModel.Timestamp= DateTime.Now; 
 
 

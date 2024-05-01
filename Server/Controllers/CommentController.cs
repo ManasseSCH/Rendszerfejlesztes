@@ -6,14 +6,16 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using Server;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Rendszerfejl.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class CommentController : Controller
     {
-        
+        [Authorize]
         [HttpGet("viewcomments/{topicId}")]
         public ActionResult<IEnumerable<CommentModel>> ViewComments(int topicId)
         {
@@ -25,7 +27,7 @@ namespace Rendszerfejl.Controllers
             return comments;
 
         }
-
+        [Authorize]
         [HttpPost("viewcomments/create")]
         public async Task<IActionResult> CreateNewComment([FromBody] CommentModel comment) // Ez hozza létre
         {
