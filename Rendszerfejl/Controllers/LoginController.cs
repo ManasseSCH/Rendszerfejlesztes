@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Rendszerfejl.Models;
 using Rendszerfejl.Services;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace Rendszerfejl.Controllers
@@ -44,7 +47,12 @@ namespace Rendszerfejl.Controllers
                         string responseContent = await response.Content.ReadAsStringAsync();
 
                         // Parse the response content as an integer
-                       
+                        //string jwt = responseContent;
+                        //var tokenHandler = new JwtSecurityTokenHandler();
+                        //var jwtTokenObj = tokenHandler.ReadJwtToken(jwt);
+                        //var claims = jwtTokenObj.Claims;
+                        //var idClaim = claims.FirstOrDefault(c => c.Type == "Id");
+
                         HttpContext.Session.SetString("Id", responseContent);
 
                         string str = await getString("topic/allTopics");
