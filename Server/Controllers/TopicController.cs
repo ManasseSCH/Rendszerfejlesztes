@@ -32,7 +32,14 @@ namespace Server.Controllers
 
             return topicList;
         }
+        [HttpGet("mycomments/{UserId}")]
 
+        public ActionResult<IEnumerable<TopicModel>> myComments(int UserId)
+        {
+            TopicsDAO_Server topics = new TopicsDAO_Server();
+            List<TopicModel> topicList = topics.GetTopicsById(UserId);
+            return topicList;
+        }
         
     }
 }

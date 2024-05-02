@@ -44,7 +44,9 @@ namespace Rendszerfejl.Controllers
                     // Check if the response is successful (status code in the range 200-299)
                     if (response.IsSuccessStatusCode)
                     {
-                        string responseContent = await response.Content.ReadAsStringAsync();
+                        string jwt = await response.Content.ReadAsStringAsync();
+
+
 
                         // Parse the response content as an integer
                         //string jwt = responseContent;
@@ -52,10 +54,9 @@ namespace Rendszerfejl.Controllers
                         //var jwtTokenObj = tokenHandler.ReadJwtToken(jwt);
                         //var claims = jwtTokenObj.Claims;
                         //var idClaim = claims.FirstOrDefault(c => c.Type == "Id");
-
-                        HttpContext.Session.SetString("Id", responseContent);
-
-                        string str = await getString("topic/allTopics");
+                        HttpContext.Session.SetString("jwt", jwt);
+                        string jwtname = HttpContext.Session.GetString("jwtname");
+                        string str = await getString("topic/allTopics",jwt);
 
                         List<TopicModel> myList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
                         return View("~/Views/topic/index.cshtml",myList);

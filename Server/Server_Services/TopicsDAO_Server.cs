@@ -43,10 +43,16 @@ namespace Server.Server_Services
                           select topic).ToList();
 
             return topics;
+        }
+        public List<TopicModel> GetTopicsById(int userID) 
+        {
+            using BloggingContext context = new BloggingContext();
+            var topics = (from topic in context.Topics
+                         join comment in context.Comments on topic.Id  equals comment.TopicId
+                         where comment.UserId.Equals(userID) 
+                         select topic).Distinct().ToList();
 
-
-
-
+            return topics;  
 
         }
     }

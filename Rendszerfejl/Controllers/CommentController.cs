@@ -5,6 +5,9 @@ using Rendszerfejl.Models;
 using Rendszerfejl.Services;
 using System.Text;
 using System;
+using Newtonsoft.Json.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Rendszerfejl.Controllers
 {
@@ -12,8 +15,9 @@ namespace Rendszerfejl.Controllers
     {
         public async Task<IActionResult> ViewComments(int id)
         {
-            string str = await getString("comment/viewcomments/" + id);
-
+            string jwt = HttpContext.Session.GetString("jwt");
+            string str = await getString("comment/viewcomments/" + id,jwt);
+            
             List<CommentModel> myList = JsonConvert.DeserializeObject<List<CommentModel>>(str);
             
             return View("ViewComments",myList); 
@@ -29,13 +33,18 @@ namespace Rendszerfejl.Controllers
         public async Task<IActionResult> CreateNewComment(string id, CommentModel commentModel) // Ez hozza létre
         {
 
+
             string url = "https://localhost:7062/api/comment/viewcomments/create";
             // JSON data to send in the request body
-            string tempId = HttpContext.Session.GetString("Id");
-            int intTempId = int.Parse(tempId);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken(HttpContext.Session.GetString("jwt"));
+            var claims = token.Claims;
+            Claim subClaim = claims.FirstOrDefault(C => C.Type == "Id");
+
             string json = System.Text.Json.JsonSerializer.Serialize(commentModel);
             commentModel.TopicId = Convert.ToInt32(id);
-            commentModel.UserId = intTempId;
+            commentModel.UserId = int.Parse(subClaim.Value);
             commentModel.Timestamp= DateTime.Now; 
 
 
@@ -43,6 +52,7 @@ namespace Rendszerfejl.Controllers
             // Create an instance of HttpClient
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("jwt"));
                 // Set the Content-Type header to indicate JSON data
                 List<CommentModel> myList = new List<CommentModel>();
 

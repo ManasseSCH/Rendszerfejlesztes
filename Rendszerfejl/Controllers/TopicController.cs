@@ -2,7 +2,9 @@
 using Newtonsoft.Json;
 using Rendszerfejl.Models;
 using Rendszerfejl.Services;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 
 
 
@@ -32,7 +34,7 @@ namespace Rendszerfejl.Controllers
 
         public async Task<IActionResult> index()
         {
-            string str = await getString("topic/allTopics");
+            string str = await getString("topic/allTopics", HttpContext.Session.GetString("jwt"));
 
             List<TopicModel> myList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
             return View(myList);
@@ -40,7 +42,7 @@ namespace Rendszerfejl.Controllers
         public async Task<IActionResult> SearchResults(string searchTerm)
         {
            
-            string str = await getString("topic/searchfor/"+searchTerm);
+            string str = await getString("topic/searchfor/"+searchTerm, HttpContext.Session.GetString("jwt"));
             List<TopicModel> topicList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
             return View("index", topicList);
         }
@@ -48,5 +50,24 @@ namespace Rendszerfejl.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> ShowMyComments()
+        {
+            HttpContext.Session.GetString("jwt");
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken(HttpContext.Session.GetString("jwt"));
+            var claims = token.Claims;
+
+            Claim subClaim = claims.FirstOrDefault(C => C.Type == "Id");
+
+            int userID = int.Parse(subClaim.Value);
+
+
+            string str = await getString("topic/mycomments/" + userID, HttpContext.Session.GetString("jwt"));
+            List<TopicModel> topicList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
+            return View("index", topicList);
+        }
+
     }
 }
