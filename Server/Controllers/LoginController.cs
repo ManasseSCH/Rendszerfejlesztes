@@ -36,7 +36,7 @@ namespace Server.Controllers
             if (securityService.IsValid(user))
             {
                 int id = securityService.Id;
-                string token = CreateToken(user);
+                string token = CreateToken(user,id);
                 return Ok(token);
             }
             else
@@ -45,31 +45,28 @@ namespace Server.Controllers
                 return BadRequest("Invalid credentials");
             }
         }
-        private string CreateToken(UserDTO user)
+        private string CreateToken(UserDTO user, int id)
         {
-            List<Claim> claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, user.userName)
-    };
 
-            // Retrieve the key from configuration settings
-            string base64Key = _configuration.GetSection("AppSettings:Token").Value;
-            byte[] keyBytes = Convert.FromBase64String(base64Key);
+            List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypes.Name, user.userName));
+            claims.Add(new Claim("Id", id.ToString()));
+            if (user.userName == "user1")
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "Role1"));
+            }
+            else
+            { 
+                claims.Add(new Claim(ClaimTypes.Role, "Role2"));
+            }
 
-            // Create a symmetric security key using the key bytes
-            var key = new SymmetricSecurityKey(keyBytes);
-
-            // Use HMAC-SHA256 algorithm with the symmetric key
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Appsettings:Token").Value!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            // Generate the JWT token
             var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds
-            );
-
-            // Write the JWT token as a string
+                    claims : claims,
+                    expires: DateTime.Now.AddDays(1),
+                    signingCredentials: creds 
+                    );
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }

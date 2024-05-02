@@ -15,7 +15,7 @@ namespace Rendszerfejl.Controllers
     
     public class CommentController : Controller
     {
-        [Authorize]
+        [Authorize(Roles = "Role1,Role2")]
         [HttpGet("viewcomments/{topicId}")]
         public ActionResult<IEnumerable<CommentModel>> ViewComments(int topicId)
         {
@@ -27,7 +27,7 @@ namespace Rendszerfejl.Controllers
             return comments;
 
         }
-        [Authorize]
+        [Authorize(Roles = "Role2")]
         [HttpPost("viewcomments/create")]
         public async Task<IActionResult> CreateNewComment([FromBody] CommentModel comment) // Ez hozza létre
         {

@@ -17,7 +17,7 @@ namespace Server.Controllers
     public class TopicController : ControllerBase
     {
         [HttpGet("allTopics")]
-        [Authorize]
+        
         public IEnumerable<TopicModel> allTopics()
         {
             TopicsDAO_Server topicsDAO = new TopicsDAO_Server();
