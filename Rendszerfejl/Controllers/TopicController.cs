@@ -68,6 +68,49 @@ namespace Rendszerfejl.Controllers
             List<TopicModel> topicList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
             return View("index", topicList);
         }
+        public async Task<IActionResult>  AddFavourite(int id) // CreateComment.cshtml-bol szedi ki
+        {
+            string url = "https://localhost:7062/api/Topic/AddFavourite/"; // Ugyanazon az elven mukodik, mint a create comment
+            // JSON data to send in the request body
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken(HttpContext.Session.GetString("jwt")); // Ez a jwt token felel az authorizacioert
+            var claims = token.Claims;
+            Claim subClaim = claims.FirstOrDefault(C => C.Type == "Id"); // Itt kerjuk ki az aktualis felhasznalo userId-jat
+
+            Favorite_topicsModel fav = new Favorite_topicsModel();  
+            string json = System.Text.Json.JsonSerializer.Serialize(fav); //jsonbe atkuldjuk
+            fav.TopicId = id;
+            fav.UserId = int.Parse(subClaim.Value);
+            
+
+
+
+            // Create an instance of HttpClient
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("jwt"));
+                // Set the Content-Type header to indicate JSON data
+                List<CommentModel> myList = new List<CommentModel>();
+
+                try
+                {
+                    JsonContent content = JsonContent.Create(fav);
+                    await client.PostAsync(url,content);
+                    //await ViewComments(Convert.ToInt32(id));
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                }
+                string str = await getString("topic/allTopics", HttpContext.Session.GetString("jwt"));
+
+                List<TopicModel> myNewList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
+                return View("index",myNewList);
+
+            }
+        }
+
 
     }
 }

@@ -33,13 +33,29 @@ namespace Server.Controllers
             return topicList;
         }
         [HttpGet("mycomments/{UserId}")]
-
+        
         public ActionResult<IEnumerable<TopicModel>> myComments(int UserId)
         {
             TopicsDAO_Server topics = new TopicsDAO_Server();
             List<TopicModel> topicList = topics.GetTopicsById(UserId);
             return topicList;
         }
-        
+        [HttpPost("AddFavourite")] 
+        public async Task<IActionResult> AddFavourite([FromBody]  Favorite_topicsModel fav) // Ez hozza létre (Visszajelzest nem ad) | database-ben tudod megnezni
+        {
+            try
+            {
+                TopicsDAO_Server topics = new TopicsDAO_Server();
+
+                topics.AddFavourite(fav);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
     }
 }

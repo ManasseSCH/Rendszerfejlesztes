@@ -55,5 +55,30 @@ namespace Server.Server_Services
             return topics;  
 
         }
+        public void  AddFavourite(Favorite_topicsModel fav)
+        {
+           
+                using (BloggingContext bg = new BloggingContext())
+                {
+                    // Check if the record already exists
+                    bool exists = bg.FavTopics.Any(ft => ft.UserId == fav.UserId && ft.TopicId == fav.TopicId);
+
+                    // If the record doesn't exist, add it
+                    if (!exists)
+                    {
+                        Favorite_topicsModel ft = new Favorite_topicsModel();
+                        ft.UserId = fav.UserId;
+                        ft.TopicId = fav.TopicId;
+                        bg.Add<Favorite_topicsModel>(ft);
+                        bg.SaveChanges();
+                    }
+                }
+
+            
+
+        }
+
+
+
     }
 }

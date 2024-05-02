@@ -43,7 +43,7 @@ namespace Server.Services
             return foundTopics;
 
         }
-        public List<TopicModel> SearchTopics(string searchTerm)
+        public List<TopicModel> SearchTopics(string searchTerm)  
         {
             List<TopicModel> foundTopics = new List<TopicModel>();
             string sqlStatement = "select t.* from topics as t join topic_types as tt on t.type_id = tt.id WHERE tt.name like @Name";

@@ -37,13 +37,16 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
+                    <a href="/Topic/AddFavourite/@item.Id" class="btn btn-primary">Add favourite</a>
                 <a href="/Comment/ViewComments/@item.Id" class="btn btn-primary">Read comments</a>
                     <a href="/Comment/CreateComment/@item.Id" class="btn btn-primary">Create comment</a>
+                   
             </td>
         </tr>
 }
     </tbody>
 </table>
+<p></p>
  <form asp-controller="Topic" asp-action="ShowMyComments" method="post">
      <input type="submit" value="Comments related posts" class="btn btn-primary" />
  </form>
