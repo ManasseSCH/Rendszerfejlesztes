@@ -65,7 +65,7 @@
     socket.onmessage = (event) => {//létrehozunk egy eventet, ami a szerver válaszát fogja tartalmazni, amit a szerver küldött
         //console.log(event.data)
         let webSocketResponse = document.getElementById("webSocketResponse");
-        webSocketResponse.innerHTML = `Ezt kaptam a szervertől: ${event.data}`;
+        webSocketResponse.innerHTML = `${event.data}`;
     };
 
     socket.onclose = (event) => {//létrehozunk egy eventet, ami a szerver válaszát fogja tartalmazni, amit a szerver küldött lecsatlakozáskor

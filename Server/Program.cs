@@ -1,13 +1,11 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Server;
 using Swashbuckle.AspNetCore.Filters;
+using System.Net;
+using System.Net.WebSockets;
 using System.Text;
-
 
 namespace Server
 {
@@ -73,12 +71,17 @@ namespace Server
 
             app.UseWebSockets(); // Enable WebSocket support
 
+            
+
             app.MapWebSocketManager("/ws", serviceProvider.GetService<HelloWorldHandler>());//A WebSocketManager-t használjuk a HelloWorldHandlerrel
 
+            
 
             app.MapControllers();
 
             app.Run();
         }
+
+        
     }
 }

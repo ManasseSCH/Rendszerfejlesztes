@@ -28,6 +28,7 @@ namespace Server
                 if (result.MessageType == WebSocketMessageType.Text)//Ha a kliens szöveges üzenetet küld
                 {
                     await _webSocketHandler.ReceiveAsync(socket, result, buffer);
+                    
                     return;
                 }
 

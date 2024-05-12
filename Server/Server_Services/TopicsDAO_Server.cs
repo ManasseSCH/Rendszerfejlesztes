@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Data.SqlClient;
 using Rendszerfejl.Models;
+using System.Net.WebSockets;
 
 namespace Server.Server_Services
 {
@@ -55,7 +56,7 @@ namespace Server.Server_Services
             return topics;  
 
         }
-        public void  AddFavourite(Favorite_topicsModel fav)
+        public async void  AddFavourite(Favorite_topicsModel fav)
         {
            
                 using (BloggingContext bg = new BloggingContext())
@@ -73,8 +74,8 @@ namespace Server.Server_Services
                         bg.SaveChanges();
                     }
                 }
+                
 
-            
 
         }
 

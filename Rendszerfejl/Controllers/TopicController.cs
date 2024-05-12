@@ -4,7 +4,9 @@ using Rendszerfejl.Models;
 using Rendszerfejl.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
+using System.Net.WebSockets;
 using System.Security.Claims;
+using System.Text;
 
 
 
@@ -82,9 +84,40 @@ namespace Rendszerfejl.Controllers
             string json = System.Text.Json.JsonSerializer.Serialize(fav); //jsonbe atkuldjuk
             fav.TopicId = id;
             fav.UserId = int.Parse(subClaim.Value);
-            
 
 
+            using (ClientWebSocket client = new ClientWebSocket())
+            {
+                var cts = new CancellationTokenSource();
+                cts.CancelAfter(TimeSpan.FromSeconds(120));
+                try
+                {
+                    Uri uri = new Uri("wss://localhost:7062/ws");
+                    await client.ConnectAsync(uri, cts.Token);
+                    var n = 0;
+                    while (client.State == WebSocketState.Open)
+                    {
+                        string message = $"AddFavTopic{fav.TopicId},{fav.UserId}";
+                        ArraySegment<byte> bytestosend = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
+                        await client.SendAsync(bytestosend, WebSocketMessageType.Text, true, cts.Token);
+                        var responsebuffer = new byte[1024];
+                        var offset = 0;
+                        var packet = 1024;
+                        while (true)
+                        {
+                            ArraySegment<byte> recievedbyte = new ArraySegment<byte>(responsebuffer, offset, packet);
+                            WebSocketReceiveResult response = await client.ReceiveAsync(recievedbyte, cts.Token);
+                            var responsemessage = Encoding.UTF8.GetString(responsebuffer, offset, response.Count);
+                            Console.WriteLine(responsemessage);
+                            if (response.EndOfMessage) { break; }
+                        }
+                    }
+                }
+                catch (WebSocketException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
 
             // Create an instance of HttpClient
             using (HttpClient client = new HttpClient())
@@ -109,6 +142,9 @@ namespace Rendszerfejl.Controllers
                 return View("index",myNewList);
 
             }
+
+
+            
         }
 
 
