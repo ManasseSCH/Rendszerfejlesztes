@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Rendszerfejl.Models.TopicModel>
 
 
-<header> @Html.Partial("~/Views/Shared/_navbar.cshtml")</header>
+<header> @Html.Partial("~/Views/Shared/_navbar.cshtml") <h1 align="right" id="webSocketResponse">asd</h1></header>
 
 <table class="table">
     <thead>
@@ -51,13 +51,15 @@
      <input type="submit" value="Comments related posts" class="btn btn-primary" />
  </form>
 
-<h2 id="webSocketResponse"></h2>
+
 <script>
     //Amennyiben itt hiba lépne fel, az a szerver oldali hiba miatt van, mivel a szerver oldalon futó websocket szerver nem tudja kiszolgálni a kérést
-    const socket = new WebSocket("wss://localhost:8888/ws");//létrehozunk egy socketet, ami a szerverrel fog kommunikálni
+    const socket = new WebSocket("wss://localhost:7062/ws");//létrehozunk egy socketet, ami a szerverrel fog kommunikálni
 
     socket.onopen = (event) => {//létrehozunk egy eventet, ami a szerver válaszát fogja tartalmazni, amit a szerver küldött csatlakozáskor
         //console.log("WebSocket connection established.");
+        let webSocketResponse = document.getElementById("webSocketResponse");
+        webSocketResponse.innerHTML = `Ezt kaptam a szervertől: ${event.data}`;
     };
 
     socket.onmessage = (event) => {//létrehozunk egy eventet, ami a szerver válaszát fogja tartalmazni, amit a szerver küldött
@@ -77,4 +79,8 @@
     function sendMessage(message) {//létrehozunk egy függvényt, ami elküldi a szervernek a paraméterként kapott üzenetet
         socket.send(message);
     }
+
+
+
 </script>
+
