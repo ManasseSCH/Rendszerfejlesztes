@@ -1,5 +1,7 @@
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Server;
@@ -55,10 +57,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 
 app.UseAuthorization();
+var serviceScopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();//A WebSocketManager használatához szükséges
+var serviceProvider = serviceScopeFactory.CreateScope().ServiceProvider;//A WebSocketManager használatához szükséges
+
+app.UseWebSockets(); // Enable WebSocket support
+
+app.MapWebSocketManager("/ws", serviceProvider.GetService<HelloWorldHandler>());//A WebSocketManager-t használjuk a HelloWorldHandlerrel
 
 app.MapControllers();
 
