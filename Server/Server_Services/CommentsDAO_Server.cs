@@ -71,7 +71,26 @@ namespace Server.Server_Services
 
 
         }
+        public List<int> getUserIds(int topicId)
+        { 
+            List<Favorite_topicsModel> favorite_Topics = new List<Favorite_topicsModel>();
+            List<int> ids = new List<int>();
+            using (BloggingContext bloggingContext = new BloggingContext())
+            {
+                favorite_Topics = bloggingContext.FavTopics.Where(c => c.TopicId == topicId).ToList();
+                foreach (var item in favorite_Topics) //Végigjárjuk a Topics táblát, hozzáadjuk elemenként a topics listához
+                {
+                    ids.Add(item.UserId);
+                }
+            }
+            return ids;
+        }
+        public List<int> getFavouriteIds(int topicID)
+        { 
+            List<int> result = getUserIds(topicID);
+            return result;
 
-       
-	}
+        }
+
+    }
 }

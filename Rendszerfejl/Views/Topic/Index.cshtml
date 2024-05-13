@@ -1,8 +1,12 @@
-﻿@model IEnumerable<Rendszerfejl.Models.TopicModel>
+﻿@using Microsoft.AspNetCore.Http
+@model IEnumerable<Rendszerfejl.Models.TopicModel>
 
 
-<header> @Html.Partial("~/Views/Shared/_navbar.cshtml") <h1 align="right" id="webSocketResponse">asd</h1></header>
-
+    
+<header> @Html.Partial("~/Views/Shared/_navbar.cshtml") <div align="right"><h1 id="webSocketResponse">@ViewBag.sessionData</h1><button  onclick="myfunc()" size="100 px">OK</button></div></header>
+<div id="targetArea">
+    
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -43,44 +47,71 @@
                    
             </td>
         </tr>
-}
+}       
     </tbody>
 </table>
-<p></p>
  <form asp-controller="Topic" asp-action="ShowMyComments" method="post">
      <input type="submit" value="Comments related posts" class="btn btn-primary" />
  </form>
 
 
 <script>
-    //Amennyiben itt hiba lépne fel, az a szerver oldali hiba miatt van, mivel a szerver oldalon futó websocket szerver nem tudja kiszolgálni a kérést
-    const socket = new WebSocket("wss://localhost:7062/ws");//létrehozunk egy socketet, ami a szerverrel fog kommunikálni
+    // Check if there's an existing WebSocket connection stored in sessionStorage
+    let socketUrl = sessionStorage.getItem('socketUrl');
+    let socket;
+    let storedValue = localStorage.getItem('pTagValue');
 
-    socket.onopen = (event) => {//létrehozunk egy eventet, ami a szerver válaszát fogja tartalmazni, amit a szerver küldött csatlakozáskor
-        //console.log("WebSocket connection established.");
-        let webSocketResponse = document.getElementById("webSocketResponse");
-        webSocketResponse.innerHTML = `Ezt kaptam a szervertől: ${event.data}`;
+    var userId = @Html.Raw(Json.Serialize(ViewBag.Number));
+
+    // If a value exists in localStorage, set the <p> tag text to it
+    if (storedValue) {
+        document.getElementById('webSocketResponse').innerHTML = storedValue;
+    }
+    console.log("yeah");
+    if (socketUrl) {
+        socket = new WebSocket(socketUrl); // Reuse the existing WebSocket connection
+    } else {
+        socket = new WebSocket("wss://localhost:7062/ws"); // Create a new WebSocket connection
+    }
+
+    // Store the WebSocket connection URL in sessionStorage
+    sessionStorage.setItem('socketUrl', socket.url);
+
+    // Add event listeners
+    socket.onopen = (event) => {
+        console.log("WebSocket connection established.");
     };
 
-    socket.onmessage = (event) => {//létrehozunk egy eventet, ami a szerver válaszát fogja tartalmazni, amit a szerver küldött
-        //console.log(event.data)
-        let webSocketResponse = document.getElementById("webSocketResponse");
-        webSocketResponse.innerHTML = `Ezt kaptam a szervertől: ${event.data}`;
+    socket.onmessage = (event) => {
+        var data = event.data;
+        var numbers = data.split(",").map(function (num) {
+            return parseInt(num, 10);
+        });
+        numbers.forEach(function (num) {
+            console.log(num);
+            console.log(userId);
+            if (num === userId) {
+                console.log("siker");
+                document.getElementById("webSocketResponse").innerHTML = "There is a new commment"
+            }
+            
+        });
     };
 
-    socket.onclose = (event) => {//létrehozunk egy eventet, ami a szerver válaszát fogja tartalmazni, amit a szerver küldött lecsatlakozáskor
+    socket.onclose = (event) => {
         if (event.wasClean) {
-            //console.log(`WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`);
+            console.log(`WebSocket connection closed cleanly, code=${event.code}, reason=${event.reason}`);
         } else {
-            //console.error(`WebSocket connection died`);
+            console.error(`WebSocket connection died`);
         }
     };
-
-    function sendMessage(message) {//létrehozunk egy függvényt, ami elküldi a szervernek a paraméterként kapott üzenetet
+    function sendMessage(message) {
         socket.send(message);
     }
 
-
-
+    function myfunc() { 
+        document.getElementById("webSocketResponse").innerHTML = "";
+    }
 </script>
+
 

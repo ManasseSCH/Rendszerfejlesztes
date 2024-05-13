@@ -19,13 +19,31 @@ namespace Rendszerfejl.Controllers
             string str = await getString("comment/viewcomments/" + id,jwt);
             
             List<CommentModel> myList = JsonConvert.DeserializeObject<List<CommentModel>>(str);
-            
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken(HttpContext.Session.GetString("jwt"));
+            var claims = token.Claims;
+
+            Claim subClaim = claims.FirstOrDefault(C => C.Type == "Id");
+
+            int userID = int.Parse(subClaim.Value);
+            ViewBag.Number = userID;
+
             return View("ViewComments",myList); 
         }
 
         public IActionResult CreateComment(int id) // Ez csak elvisz arra a cshtml-re, ahol létre lehet hozni
         {
             @ViewBag.Message = id;
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken(HttpContext.Session.GetString("jwt"));
+            var claims = token.Claims;
+
+            Claim subClaim = claims.FirstOrDefault(C => C.Type == "Id");
+
+            int userID = int.Parse(subClaim.Value);
+            ViewBag.Number = userID;
             return View("CreateComment");
             
         }

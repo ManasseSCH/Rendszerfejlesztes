@@ -5,6 +5,7 @@ namespace Server
 {
     public abstract class WebSocketHandler
     {
+        public static List<WebSocket> sockets = new List<WebSocket>();
         protected ConnectionManager WebSocketConnectionManager { get; set; }
 
         public WebSocketHandler(ConnectionManager webSocketConnectionManager)
@@ -15,7 +16,7 @@ namespace Server
         public virtual async Task OnConnected(System.Net.WebSockets.WebSocket socket)
         {//Amikor egy kliens csatlakozik a szerverhez visszaküldünk egy üzenetet("Hello World")
             WebSocketConnectionManager.AddSocket(socket);
-            await SendMessageAsync(socket, "Hello World");
+            sockets.Add(socket);
         }
 
         public virtual async Task OnDisconnected(System.Net.WebSockets.WebSocket socket)

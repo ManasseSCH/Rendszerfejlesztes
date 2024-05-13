@@ -16,11 +16,18 @@ namespace Server.Controllers
     [ApiController]
     public class TopicController : ControllerBase
     {
+        private readonly HelloWorldHandler _helloWorldHandler;
+
+        public TopicController(HelloWorldHandler helloWorldHandler)
+        {
+            _helloWorldHandler = helloWorldHandler;
+        }
         [HttpGet("allTopics")]
         
-        public IEnumerable<TopicModel> allTopics()
+        public async Task<IEnumerable<TopicModel>>allTopics()
         {
             TopicsDAO_Server topicsDAO = new TopicsDAO_Server();
+            await _helloWorldHandler.SendMessageToAllAsync("new comment");
             return topicsDAO.GetAllTopics();
         }
 
@@ -48,6 +55,7 @@ namespace Server.Controllers
                 TopicsDAO_Server topics = new TopicsDAO_Server();
 
                 topics.AddFavourite(fav);
+
                 return Ok();
             }
             catch (Exception ex)

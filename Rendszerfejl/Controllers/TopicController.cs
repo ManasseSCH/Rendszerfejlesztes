@@ -27,16 +27,35 @@ namespace Rendszerfejl.Controllers
         //            message = await response.Content.ReadAsStringAsync();
                     
         //        }
-        //        return message;
+        //        return message; 
 
         //    }
         //}
-
+        
         public async Task<IActionResult> index()
         {
             string str = await getString("topic/allTopics", HttpContext.Session.GetString("jwt"));
 
             List<TopicModel> myList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
+            var socketUrl = HttpContext.Session.GetString("socketUrl");
+            if (string.IsNullOrEmpty(socketUrl))
+            {
+                // If no existing connection, create a new one and store the URL in session
+                HttpContext.Session.SetString("socketUrl", "wss://localhost:7062/ws");
+            }
+            ViewBag.socketUrl = HttpContext.Session.GetString("socketUrl");
+
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken(HttpContext.Session.GetString("jwt"));
+            var claims = token.Claims;
+
+            Claim subClaim = claims.FirstOrDefault(C => C.Type == "Id");
+
+            int userID = int.Parse(subClaim.Value);
+            ViewBag.Number = userID;
+
+
             return View(myList);
         }
         public async Task<IActionResult> SearchResults(string searchTerm)

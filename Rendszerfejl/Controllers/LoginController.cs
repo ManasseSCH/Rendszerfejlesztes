@@ -57,7 +57,14 @@ namespace Rendszerfejl.Controllers
                         HttpContext.Session.SetString("jwt", jwt);
                         string jwtname = HttpContext.Session.GetString("jwtname");
                         string str = await getString("topic/allTopics",jwt);
+                        var tokenHandler = new JwtSecurityTokenHandler();
+                        var token = tokenHandler.ReadJwtToken(HttpContext.Session.GetString("jwt"));
+                        var claims = token.Claims;
 
+                        Claim subClaim = claims.FirstOrDefault(C => C.Type == "Id");
+
+                        int userID = int.Parse(subClaim.Value);
+                        ViewBag.Number = userID;
                         List<TopicModel> myList = JsonConvert.DeserializeObject<List<TopicModel>>(str);
                         return View("~/Views/topic/index.cshtml",myList);
                         
